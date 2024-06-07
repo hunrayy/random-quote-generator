@@ -1,22 +1,32 @@
 
 import { useEffect, useState } from "react"
 import Cssloader from "./Cssloader"
+import axios from "axios"
 
 
 const Quotes = () => {
 
     const [loading, setLoading] = useState(true)
     const [quotes, setQuotes] = useState("")
+
     const getQuote =  async () => {
-        // setLoading(true)
+        setLoading(true)
         await fetch("https://type.fit/api/quotes")
         .then(res => res.json())
         .then((data) => {
             let randomNum = Math.floor(Math.random() * data.length)
             setQuotes(data[randomNum])
-            // console.log(quotes.text)
+            // console.log(quotes)
+            setLoading(false)
         })
-        setLoading(false)
+
+
+        // axios.get("https://type.fit/api/quotes")
+        // .then((data) => {
+        //     let randomNum = Math.floor(Math.random() * data.length)
+        //     setQuotes(data[randomNum])
+        //     })
+        //     setLoading(false)
     }
 
 
@@ -32,12 +42,12 @@ const Quotes = () => {
     return<>
         <div className="App">
             <div className="quote">
-                <p>"{quotes.text}"</p>
-                <p>-- {quotes.author}</p>
+                <p>"{quotes ? quotes.text : ""}"</p>
+                <p>-- {quotes ? quotes.author : ""}</p>
                 <div className="btnContainer">
                     <button onClick={getQuote} className="btn">Get Quotes</button>
                     <a 
-                      href={`https://twitter.com/intent/tweet?text=${quotes.text}`}
+                      href={`https://twitter.com/intent/tweet?text=${quotes ? quotes.text : ""}`}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="btn">Tweet</a>
